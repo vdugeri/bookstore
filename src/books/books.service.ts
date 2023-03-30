@@ -33,8 +33,8 @@ export class BooksService {
     return true;
   }
 
-  async editBook(id: number, bookRequest: BookRequest): Promise<Book> {
-    let book = await this.bookRepository.findOne({ where: { id } });
+  async editBook(idArgs: IDArgs, bookRequest: BookRequest): Promise<Book> {
+    let book = await this.bookRepository.findOne({ where: { id: idArgs.id } });
 
     if (!book) {
       book = new Book();

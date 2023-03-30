@@ -38,9 +38,9 @@ export class BookResolver {
   @Mutation((returns) => Book)
   async editBook(
     @Args('bookRequest') bookRequest: BookRequest,
-    @Args('id') id: number,
+    @Args('idArgs') idArgs: IDArgs,
   ) {
-    const book = await this.bookService.editBook(id, bookRequest);
+    const book = await this.bookService.editBook(idArgs, bookRequest);
     pubSub.publish('bookEdited', { bookEdited: book });
 
     return book;

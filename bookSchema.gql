@@ -18,7 +18,7 @@ type Query {
 
 type Mutation {
   addBook(bookRequest: BookRequest!): Book!
-  editBook(bookRequest: BookRequest!, id: Float!): Book!
+  editBook(bookRequest: BookRequest!, idArgs: IDArgs!): Book!
   removeBook(id: IDArgs!): Book!
 }
 
