@@ -25,7 +25,7 @@ export class BookResolver {
 
   @Query((returns) => [Book])
   async books(@Args() bookArgs: BookArgs): Promise<Book[]> {
-    return this.bookService.findAll();
+    return await this.bookService.findAll(bookArgs);
   }
 
   @Mutation((returns) => Book)
@@ -35,13 +35,29 @@ export class BookResolver {
     return book;
   }
 
+  @Mutation((returns) => Book)
+  async editBook(
+    @Args('bookRequest') bookRequest: BookRequest,
+    @Args('id') id: number,
+  ) {
+    const book = await this.bookService.editBook(id, bookRequest);
+    pubSub.publish('bookEdited', { bookEdited: book });
+
+    return book;
+  }
+
   @Mutation((returns) => Boolean)
-  async removeBook(@Args('id') id: number) {
+  async removeBook(@Args('id') id: number): Promise<boolean> {
     return this.bookService.removeBook(id);
   }
 
   @Subscription((returns) => Book)
   bookAdded() {
     return pubSub.asyncIterator('bookAdded');
+  }
+
+  @Subscription((returns) => Book)
+  bookEdited() {
+    return pubSub.asyncIterator('bookEdited');
   }
 }

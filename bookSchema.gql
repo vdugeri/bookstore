@@ -1,0 +1,33 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+"""book"""
+type Book {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+type Query {
+  book(id: Float!): Book!
+  books(skip: Int! = 0, take: Int! = 25): [Book!]!
+}
+
+type Mutation {
+  addBook(bookRequest: BookRequest!): Book!
+  editBook(bookRequest: BookRequest!, id: Float!): Book!
+  removeBook(id: Float!): Boolean!
+}
+
+input BookRequest {
+  name: String!
+  description: String!
+}
+
+type Subscription {
+  bookAdded: Book!
+  bookEdited: Book!
+}
