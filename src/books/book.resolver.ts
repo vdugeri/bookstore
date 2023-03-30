@@ -2,9 +2,9 @@ import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Book } from './book.entity';
 import { BooksService } from './books.service';
 import { NotFoundException } from '@nestjs/common';
-import { BookArgs } from './dto/book.args';
 import { BookRequest } from './dto/book.request';
 import { PubSub } from 'graphql-subscriptions';
+import { IDArgs } from './dto/id.input';
 
 const pubSub = new PubSub();
 
@@ -24,8 +24,8 @@ export class BookResolver {
   }
 
   @Query((returns) => [Book])
-  async books(@Args() bookArgs: BookArgs): Promise<Book[]> {
-    return await this.bookService.findAll(bookArgs);
+  async books(): Promise<Book[]> {
+    return await this.bookService.findAll();
   }
 
   @Mutation((returns) => Book)
@@ -46,9 +46,14 @@ export class BookResolver {
     return book;
   }
 
-  @Mutation((returns) => Boolean)
-  async removeBook(@Args('id') id: number): Promise<boolean> {
-    return this.bookService.removeBook(id);
+  @Mutation((returns) => Book)
+  async removeBook(@Args('id') idArgs: IDArgs): Promise<Book> {
+    const book = await this.bookService.findOneById(idArgs.id);
+    if (book) {
+      await this.bookService.removeBook(idArgs);
+    }
+
+    return book;
   }
 
   @Subscription((returns) => Book)

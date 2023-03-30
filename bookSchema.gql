@@ -13,18 +13,22 @@ type Book {
 
 type Query {
   book(id: Float!): Book!
-  books(skip: Int! = 0, take: Int! = 25): [Book!]!
+  books: [Book!]!
 }
 
 type Mutation {
   addBook(bookRequest: BookRequest!): Book!
   editBook(bookRequest: BookRequest!, id: Float!): Book!
-  removeBook(id: Float!): Boolean!
+  removeBook(id: IDArgs!): Book!
 }
 
 input BookRequest {
   name: String!
   description: String!
+}
+
+input IDArgs {
+  id: ID!
 }
 
 type Subscription {

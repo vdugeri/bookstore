@@ -3,7 +3,7 @@ import { Book } from './book.entity';
 import { BookRequest } from './dto/book.request';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BookArgs } from './dto/book.args';
+import { IDArgs } from './dto/id.input';
 
 @Injectable()
 export class BooksService {
@@ -15,12 +15,8 @@ export class BooksService {
     return this.bookRepository.findOne({ where: { id } });
   }
 
-  async findAll(bookArgs: BookArgs): Promise<Book[]> {
-    const { skip, take }: BookArgs = bookArgs;
-    return this.bookRepository.find({
-      skip,
-      take,
-    });
+  async findAll(): Promise<Book[]> {
+    return this.bookRepository.find();
   }
 
   async create(bookRequest: BookRequest): Promise<Book> {
@@ -32,8 +28,8 @@ export class BooksService {
     return this.bookRepository.save(book);
   }
 
-  async removeBook(id: number): Promise<boolean> {
-    await this.bookRepository.delete(id);
+  async removeBook(idArgs: IDArgs): Promise<boolean> {
+    await this.bookRepository.delete(idArgs.id);
     return true;
   }
 
