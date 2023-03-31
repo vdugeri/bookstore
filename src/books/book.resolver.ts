@@ -1,10 +1,12 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Book } from './book.entity';
 import { BooksService } from './books.service';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { BookRequest } from './dto/book.request';
 import { PubSub } from 'graphql-subscriptions';
 import { IDArgs } from './dto/id.input';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from "../auth/jwt.guard";
 
 const pubSub = new PubSub();
 
@@ -13,6 +15,7 @@ export class BookResolver {
   constructor(private readonly bookService: BooksService) {}
 
   @Query((returns) => Book)
+  @UseGuards(JwtGuard)
   async book(@Args('id') id: number): Promise<Book> {
     const book: Book = await this.bookService.findOneById(id);
 
