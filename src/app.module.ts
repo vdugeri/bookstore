@@ -7,6 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { GraphQLDirective } from 'graphql/type';
 import { DirectiveLocation } from 'graphql/language';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DirectiveLocation } from 'graphql/language';
       },
     }),
     BooksModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
